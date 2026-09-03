@@ -27,7 +27,7 @@ The local site listens on `http://localhost:4321`. Verification includes unit/AP
 
 ## Social previews
 
-Every public route declares its own versioned 1200×630 JPEG through Open Graph, Twitter Card, standard image discovery, and schema.org metadata. `npm run build` regenerates those cards plus the legacy PNG aliases and install icons. The generator embeds the project typefaces directly into its SVG inputs before rasterizing them, so production output does not depend on fonts installed on the build runner.
+Every public route declares its own versioned 1200×630 JPEG through Open Graph, Twitter Card, standard image discovery, and schema.org metadata. `npm run build` regenerates those cards plus the legacy PNG aliases and install icons. The generator converts the pinned project typefaces into SVG glyph outlines before rasterizing them, so production output does not depend on fonts installed on—or supported by—the build runner.
 
 The test suite verifies dimensions, format, opacity, color space, byte size, cache and cross-origin headers, per-route uniqueness, and successful retrieval using Slack, X/Twitter, Facebook, LinkedIn, and Discord crawler user agents.
 

@@ -34,13 +34,10 @@ const cards = [
 
 async function loadFont (packagePath) {
   const bytes = await readFile(require.resolve(packagePath))
-  return {
-    data: bytes.toString('base64'),
-    parsed: opentype.parse(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength))
-  }
+  return opentype.parse(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength))
 }
 
-const [display, body, italic] = await Promise.all([
+const [displayFont, bodyFont, italicFont] = await Promise.all([
   loadFont('@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff'),
   loadFont('@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff'),
   loadFont('@fontsource/newsreader/files/newsreader-latin-700-italic.woff')
@@ -63,8 +60,17 @@ function fitText (font, value, preferredSize, maxWidth, tracking = 0, minimumSiz
   return size
 }
 
-function escapeXml (value) {
-  return value.replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&apos;', '"': '&quot;' })[character])
+function textPath ({ font, value, x, y, size, fill, tracking = 0 }) {
+  const glyphs = font.stringToGlyphs(value)
+  const scale = size / font.unitsPerEm
+  let cursor = x
+  const paths = glyphs.map((glyph, index) => {
+    const path = glyph.getPath(cursor, y, size).toPathData(2)
+    cursor += glyph.advanceWidth * scale
+    if (index < glyphs.length - 1) cursor += font.getKerningValue(glyph, glyphs[index + 1]) * scale + tracking
+    return path ? `<path d="${path}"/>` : ''
+  }).join('')
+  return `<g fill="${fill}">${paths}</g>`
 }
 
 function grid () {
@@ -118,22 +124,18 @@ function motif (name, accent) {
 }
 
 function cardSvg (card) {
-  const firstSize = fitText(display.parsed, card.lines[0], 69, 642, -2.5, 48)
-  const secondSize = fitText(italic.parsed, card.lines[1], 68, 665, -2, 38)
+  const firstSize = fitText(displayFont, card.lines[0], 69, 642, -2.5, 48)
+  const secondSize = fitText(italicFont, card.lines[1], 68, 665, -2, 38)
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-    <defs><style>
-      @font-face { font-family: CardDisplay; src: url(data:font/woff;base64,${display.data}) format('woff'); font-weight: 700; }
-      @font-face { font-family: CardBody; src: url(data:font/woff;base64,${body.data}) format('woff'); font-weight: 400; }
-      @font-face { font-family: CardEditorial; src: url(data:font/woff;base64,${italic.data}) format('woff'); font-weight: 700; font-style: italic; }
-    </style></defs>
     <rect width="1200" height="630" fill="${palette.ink}"/>${grid()}
     <g fill="${palette.lime}"><rect x="62" y="48" width="9" height="20"/><rect x="78" y="38" width="9" height="30"/><rect x="94" y="46" width="9" height="22"/></g>
-    <text x="120" y="65" fill="${palette.paper}" font-family="CardDisplay" font-size="25" font-weight="700">metanet<tspan fill="${palette.lime}">.fyi</tspan></text>
-    <text x="62" y="166" fill="${card.accent}" font-family="CardDisplay" font-size="16" font-weight="700" letter-spacing="2.8">${escapeXml(card.kicker)}</text>
-    <text x="62" y="278" fill="${palette.paper}" font-family="CardDisplay" font-size="${firstSize}" font-weight="700" letter-spacing="-2.5">${escapeXml(card.lines[0])}</text>
-    <text x="62" y="357" fill="${card.accent}" font-family="CardEditorial" font-size="${secondSize}" font-weight="700" font-style="italic" letter-spacing="-2">${escapeXml(card.lines[1])}</text>
+    ${textPath({ font: displayFont, value: 'metanet', x: 120, y: 65, size: 25, fill: palette.paper })}
+    ${textPath({ font: displayFont, value: '.fyi', x: 120 + textWidth(displayFont, 'metanet', 25), y: 65, size: 25, fill: palette.lime })}
+    ${textPath({ font: displayFont, value: card.kicker, x: 62, y: 166, size: 16, fill: card.accent, tracking: 2.8 })}
+    ${textPath({ font: displayFont, value: card.lines[0], x: 62, y: 278, size: firstSize, fill: palette.paper, tracking: -2.5 })}
+    ${textPath({ font: italicFont, value: card.lines[1], x: 62, y: 357, size: secondSize, fill: card.accent, tracking: -2 })}
     <path d="M62 516H654" stroke="#3a3c3d"/>
-    <text x="62" y="552" fill="${palette.quiet}" font-family="CardBody" font-size="18" letter-spacing="1">CONCEPT  /  PROOF  /  ACTION</text>
+    ${textPath({ font: bodyFont, value: 'CONCEPT  /  PROOF  /  ACTION', x: 62, y: 552, size: 18, fill: palette.quiet, tracking: 1 })}
     ${motif(card.motif, card.accent)}
   </svg>`
 }
@@ -149,12 +151,14 @@ async function renderIcon (size, filename) {
 
 await mkdir(outputDirectory, { recursive: true })
 for (const card of cards) {
-  const svg = Buffer.from(cardSvg(card))
-  const expectedImage = `/social/${card.slug}-v2.jpg`
+  const markup = cardSvg(card)
+  if (/<text|@font-face|font-family/.test(markup)) throw new Error(`Card ${card.slug} must not depend on a font renderer`)
+  const svg = Buffer.from(markup)
+  const expectedImage = `/social/${card.slug}-v3.jpg`
   if (routes[card.path].image !== expectedImage) throw new Error(`Route ${card.path} must reference ${expectedImage}`)
 
   const rendered = sharp(svg).flatten({ background: palette.ink }).toColourspace('srgb').removeAlpha()
-  await rendered.clone().jpeg({ quality: 92, chromaSubsampling: '4:4:4', progressive: false }).toFile(join(outputDirectory, `${card.slug}-v2.jpg`))
+  await rendered.clone().jpeg({ quality: 92, chromaSubsampling: '4:4:4', progressive: false }).toFile(join(outputDirectory, `${card.slug}-v3.jpg`))
   await rendered.clone().png({ compressionLevel: 9 }).toFile(join(outputDirectory, `${card.slug}.png`))
 }
 
