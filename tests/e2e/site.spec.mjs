@@ -26,6 +26,8 @@ test('recovery checklist updates, persists, and resets', async ({ page }) => {
   await expect(page.locator('#recovery-score')).toHaveText('0')
   await page.locator('[data-recovery-check]').first().check()
   await expect(page.locator('#recovery-score')).toHaveText('1')
+  const checkedViolations = await page.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } })).violations)
+  expect(checkedViolations, JSON.stringify(checkedViolations, null, 2)).toEqual([])
   await page.reload()
   await expect(page.locator('#recovery-score')).toHaveText('1')
   await page.locator('#reset-checks').click()

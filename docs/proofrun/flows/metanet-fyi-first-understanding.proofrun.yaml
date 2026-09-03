@@ -6,7 +6,6 @@ metadata:
   version: 1.0.0
   description: Proves that a newcomer can explain overlays accurately and reach a useful role-based next step.
 target: {type: web, url: https://metanet.fyi, environment: production}
-uses: [generic.website-baseline@1.0.0]
 matrix:
   maxCases: 2
   dimensions:

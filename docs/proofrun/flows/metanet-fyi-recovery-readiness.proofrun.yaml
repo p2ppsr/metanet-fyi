@@ -6,7 +6,6 @@ metadata:
   version: 1.0.0
   description: Proves that an on-chain publisher can identify continuity gaps and leave with a practical remediation path.
 target: {type: web, url: https://metanet.fyi/overlays/recovery, environment: production}
-uses: [generic.website-baseline@1.0.0]
 matrix:
   maxCases: 2
   dimensions:
@@ -16,11 +15,11 @@ matrix:
     accessibility: [keyboard]
 budget:
   maxCases: 2
-  maxProviderCalls: 24
-  maxInputTokens: 200000
-  maxOutputTokens: 24000
+  maxProviderCalls: 60
+  maxInputTokens: 500000
+  maxOutputTokens: 60000
   maxCostUsd: 0.5
-  perCase: {maxProviderCalls: 12, maxInputTokens: 100000, maxOutputTokens: 12000, maxCostUsd: 0.25}
+  perCase: {maxProviderCalls: 30, maxInputTokens: 250000, maxOutputTokens: 30000, maxCostUsd: 0.25}
   onExceed: block
 intelligence:
   mode: adaptive
@@ -34,8 +33,8 @@ journeys:
   - id: assess-and-remediate
     goal: Assess whether an on-chain dataset could outlive its original application and identify the next corrective action.
     start: /overlays/recovery
-    maxActions: 26
-    maxSeconds: 300
+    maxActions: 60
+    maxSeconds: 420
     steps:
       - id: complete-assessment
         instruction: Use only the keyboard to inspect and complete the survival test for a hypothetical dataset that has an open format and mined transactions but only one custodian, no tested catch-up, and no portable export.
