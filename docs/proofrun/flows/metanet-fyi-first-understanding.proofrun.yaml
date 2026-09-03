@@ -8,19 +8,19 @@ metadata:
 target: {type: web, url: https://metanet.fyi, environment: production}
 uses: [generic.website-baseline@1.0.0]
 matrix:
-  maxCases: 4
+  maxCases: 2
   dimensions:
     agent: [openai-computer]
-    profile: [customer.impatient-newcomer@1.0.0, customer.cautious-low-vision@1.0.0]
+    profile: [customer.metanet-curious-reader@1.0.0]
     device: [device.chromium-desktop@1.0.0, device.chromium-mobile@1.1.0]
     accessibility: [standard]
 budget:
-  maxCases: 4
-  maxProviderCalls: 72
-  maxInputTokens: 600000
-  maxOutputTokens: 72000
-  maxCostUsd: 1
-  perCase: {maxProviderCalls: 18, maxInputTokens: 150000, maxOutputTokens: 18000, maxCostUsd: 0.25}
+  maxCases: 2
+  maxProviderCalls: 40
+  maxInputTokens: 400000
+  maxOutputTokens: 40000
+  maxCostUsd: 0.5
+  perCase: {maxProviderCalls: 20, maxInputTokens: 200000, maxOutputTokens: 20000, maxCostUsd: 0.25}
   onExceed: block
 intelligence:
   mode: adaptive

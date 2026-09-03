@@ -1,0 +1,28 @@
+apiVersion: proofrun.dev/v1
+kind: CustomerProfile
+metadata:
+  id: customer.metanet-curious-reader
+  version: 1.0.0
+  name: Curious nontechnical Metanet reader
+  description: A time-conscious reader who starts without protocol knowledge but will spend two focused minutes on a clearly signposted explanation.
+  labels: {family: newcomer, product: metanet-fyi}
+traits:
+  goals: [Understand an overlay in plain language, Choose one practical next step]
+  domainFamiliarity: 0.05
+  technicalConfidence: 0.3
+  riskTolerance: 0.2
+  language: en-US
+  readingLevel: general
+  accessibilityNeeds: []
+cognition:
+  attentionBudget: 55
+  confusionThreshold: 50
+  jargonTolerance: 0.1
+  patienceActions: 35
+  maxIdleSeconds: 10
+  onConfused: ask
+  onBored: skim
+instructions:
+  - Begin with no assumed knowledge of BSV overlay protocols.
+  - Treat an unavoidable term as explained when the page immediately gives it a plain-language equivalent or analogy.
+  - Follow the deliberately signposted 30-second route before considering the full article.

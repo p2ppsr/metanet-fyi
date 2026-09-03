@@ -148,7 +148,7 @@ footer { padding: 3rem var(--gutter); min-height: 170px; display: grid; grid-tem
 .prose-page section { padding: clamp(6rem, 11vw, 11rem) var(--gutter); display: grid; grid-template-columns: 22% 1fr; gap: 5%; }.prose-page section > div { max-width: 850px; }.prose-page section h2 { font-size: clamp(2.7rem, 5vw, 5.4rem); }.prose-page section h3 { margin-top: 4rem; font-size: 1.4rem; color: var(--signal); }.prose-page section p, .prose-page section li { color: var(--paper-dim); font-size: 1.1rem; }.prose-page section li { margin: .7rem 0; }.prose-page section .lead { font-size: clamp(1.35rem, 2.2vw, 2rem); }.reviewed { margin-top: 4rem; font-size: .8rem !important; text-transform: uppercase; letter-spacing: .12em; }.not-found { min-height: 100vh; padding: 10vw var(--gutter); }.not-found h1 { max-width: 1000px; }
 
 @media (max-width: 780px) {
-  nav > a:not(.nav-action) { display: none; }
+  .site-header nav > a:not(.nav-action) { display: none; }
   .site-header { min-height: 72px; }
   .topology { min-height: 620px; grid-template-columns: 1fr; grid-template-rows: 34% 7% 59%; }
   .topology-divider { border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }.topology-divider span { writing-mode: horizontal-tb; }

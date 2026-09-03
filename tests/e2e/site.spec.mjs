@@ -39,3 +39,15 @@ test('mobile navigation reaches the flagship guide', async ({ page }) => {
   await expect(page).toHaveURL(/\/overlays$/)
   await expect(page.locator('h1')).toContainText('The chain proves it')
 })
+
+test('mobile 30-second model exposes a working role route', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/overlays')
+  await page.getByRole('link', { name: 'Get the 30-second model' }).click()
+  await expect(page.locator('#quick-model')).toBeInViewport()
+  const publisherRoute = page.getByRole('link', { name: /Publisher: test survival/ })
+  await expect(publisherRoute).toBeVisible()
+  await publisherRoute.click()
+  await expect(page).toHaveURL(/\/overlays\/recovery$/)
+  await expect(page.getByRole('link', { name: /Start the seven checks/ })).toBeVisible()
+})
