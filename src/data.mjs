@@ -74,7 +74,7 @@ export const resources = [
       { title: 'BRC-95 · Atomic BEEF', url: 'https://github.com/bsv-blockchain/BRCs/blob/master/transactions/0095.md', owner: 'BRCs', status: 'Current', note: 'A self-contained, atomic transaction proof envelope used in modern transaction exchange.' },
       { title: 'BRC-100 · Wallet Toolbox', url: 'https://github.com/bsv-blockchain/BRCs/blob/master/wallet/0100.md', owner: 'BRCs', status: 'Current', note: 'The wallet interface context around user-controlled transactions, identity, baskets, and services.' },
       { title: 'BRC-136 · BASM', url: 'https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0136.md', owner: 'BRCs', status: 'Current extension', note: 'Block-aligned sparse Merkle roots help peers compare confirmed topic state and localize differences.' },
-      { title: 'BRC-167 · CHIRP', url: 'https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0167.md', owner: 'BRCs', status: 'Current extension', note: 'A host interconnect pattern for relaying transactions among participating services.' }
+      { title: 'BRC-167 · CHIRP', url: 'https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0167.md', owner: 'BRCs', status: 'Current extension', note: 'A chunked Merkle-object layer above UHRP for immutable ordered byte streams, with concurrent multi-host retrieval, per-chunk verification, retry, resume, and range selection.' }
     ]
   },
   {

@@ -17,6 +17,7 @@ Metanet.fyi therefore occupies the “concept → proof → action” layer. It 
 - GASP began in exploratory BRC-76. Current implementation behavior should be sourced to the maintained `@bsv/gasp` package.
 - BRC-23 and BRC-25 are historical discovery designs superseded in that role by BRC-88. BRC-101 is aspirational. The older BSV Go overlay repository is archived; the TypeScript stack is the current official implementation route.
 - BASM adds block-aligned sparse Merkle roots and per-block topic anchors so peers can compare confirmed topic state and efficiently locate differences.
+- CHIRP is content resolution, not transaction relay. BRC-167 defines a chunked Merkle-object layer above UHRP for immutable ordered byte streams. It reuses `tm_uhrp` and `ls_uhrp` while adding bounded chunks, concurrent multi-host retrieval, per-chunk verification, retry, resume, and logical byte-range selection.
 
 ## Primary references
 

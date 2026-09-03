@@ -4,7 +4,7 @@ import { createServer } from 'node:http'
 import test from 'node:test'
 import sharp from 'sharp'
 import { createHandler } from '../../src/app.mjs'
-import { routes } from '../../src/data.mjs'
+import { resources, routes } from '../../src/data.mjs'
 import { renderPage } from '../../src/pages.mjs'
 
 test('every public route renders complete, page-specific metadata', () => {
@@ -32,6 +32,14 @@ test('every public route renders complete, page-specific metadata', () => {
     images.add(meta.image)
   }
   assert.equal(images.size, Object.keys(routes).length, 'every route needs its own preview image')
+})
+
+test('source descriptions preserve important protocol boundaries', () => {
+  const chirp = resources.flatMap(group => group.items).find(item => item.title.includes('CHIRP'))
+  assert.ok(chirp)
+  assert.match(chirp.note, /chunked Merkle-object layer above UHRP/i)
+  assert.match(chirp.note, /immutable ordered byte streams/i)
+  assert.doesNotMatch(chirp.note, /transaction/i)
 })
 
 test('HTTP surface serves health, discovery files, assets, and compression', async () => {
