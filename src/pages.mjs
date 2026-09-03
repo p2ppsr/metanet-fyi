@@ -105,7 +105,7 @@ function home () {
   return `<section class="hero home-hero" aria-labelledby="hero-title">
     <div class="eyebrow"><span>Field notes</span><span>Independent</span><span>Open sources</span></div>
     <h1 id="hero-title">The Metanet,<br><em>made legible.</em></h1>
-    <p class="hero-deck">Metanet.fyi publishes independent visual explainers for curious readers, data publishers, builders, and operators. Start with Overlays: how groups keep and share the Bitcoin records they care about without searching the whole history.</p>
+    <p class="hero-deck">Metanet.fyi publishes independent visual explainers for curious readers, data publishers, builders, and operators. First up: an overlay is a shared index where a community keeps and finds the Bitcoin records it cares about without searching the whole history.</p>
     <div class="hero-actions"><a class="button button-primary" href="/overlays" data-event="guide.started">Read: Overlays, explained <span aria-hidden="true">↗</span></a><a class="text-link" href="/resources">Browse the source atlas <span aria-hidden="true">→</span></a></div>
     <a class="feature-card" href="/overlays" data-event="guide.started">
       <span class="feature-index">001</span><span class="feature-kicker">New field guide · 18 min</span>
