@@ -103,9 +103,9 @@ const topology = `<div class="topology" role="img" aria-label="A contrast betwee
 
 function home () {
   return `<section class="hero home-hero" aria-labelledby="hero-title">
-    <div class="eyebrow"><span>Field notes</span><span>BSV</span><span>Open sources</span></div>
+    <div class="eyebrow"><span>Field notes</span><span>Independent</span><span>Open sources</span></div>
     <h1 id="hero-title">The Metanet,<br><em>made legible.</em></h1>
-    <p class="hero-deck">Start with a human question. Leave with the right mental model, the primary sources, and a practical next move.</p>
+    <p class="hero-deck">Independent visual field guides for curious readers, on-chain publishers, builders, and operators. Start with a human question; leave with a mental model, primary sources, and a practical next move.</p>
     <div class="hero-actions"><a class="button button-primary" href="/overlays" data-event="guide.started">Enter field guide 001 <span aria-hidden="true">↗</span></a><a class="text-link" href="/resources">Browse the source atlas <span aria-hidden="true">→</span></a></div>
     <a class="feature-card" href="/overlays" data-event="guide.started">
       <span class="feature-index">001</span><span class="feature-kicker">New field guide · 18 min</span>
@@ -128,8 +128,14 @@ function overlays () {
   <section class="hero guide-hero" aria-labelledby="hero-title">
     <div class="eyebrow"><span>Field guide 001</span><span>Overlays</span><span>18 min</span><span>Reviewed Sep 2026</span></div>
     <h1 id="hero-title">The chain proves it.<br><em>The network keeps it useful.</em></h1>
-    <p class="hero-deck">You do not scale by asking every app to scan every transaction. You scale by exchanging the transactions that matter—directly, by shared rules, with proofs.</p>
+    <p class="hero-deck">An overlay is a shared network and index for one useful class of transactions. It lets participants exchange what matters—directly, by shared rules, with evidence—instead of making every app scan everything.</p>
     <div class="hero-actions"><a class="button button-primary" href="#shift" data-event="guide.started">Understand overlays <span aria-hidden="true">↓</span></a><a class="text-link" href="/overlays/recovery">Can my data survive an app? <span aria-hidden="true">↗</span></a></div>
+    <aside class="quick-model" aria-labelledby="quick-model-title">
+      <span id="quick-model-title">The 30-second model</span>
+      <p><b>The blockchain orders.</b> <b>An overlay selects and retains.</b> <b>An application presents.</b></p>
+      <p>A cryptographic proof can authenticate bytes you have. It cannot recreate bytes that nobody kept.</p>
+      <nav aria-label="Choose a role"><a href="/overlays/recovery" data-event="pathway.selected">Publisher: test survival →</a><a href="/overlays/build" data-event="pathway.selected">Builder: follow the build path →</a><a href="/resources" data-event="pathway.selected">Reader: open the sources →</a></nav>
+    </aside>
     ${topology}
   </section>
 
@@ -225,7 +231,7 @@ function resourceGroups () {
 }
 
 function resourcePage () {
-  return `<article class="resources-page"><header class="resource-hero"><div class="eyebrow"><span>Source atlas</span><span>${currentResourceCount} links</span><span>Reviewed Sep 2026</span></div><h1>Follow the claim<br><em>to its source.</em></h1><p class="hero-deck">A status-labeled map of the specifications, maintained code, examples, and historical material behind BSV overlays. This is a reading route—not a pile of links.</p><div class="legend"><span><i class="live"></i>Current / maintained</span><span><i class="context"></i>Context / example</span><span><i class="history"></i>Historical / aspirational</span></div></header>
+  return `<article class="resources-page"><header class="resource-hero"><div class="eyebrow"><span>Source atlas</span><span>${currentResourceCount} links</span><span>Reviewed Sep 2026</span></div><h1>Follow the claim<br><em>to its source.</em></h1><p class="hero-deck">A status-labeled map of the specifications, maintained code, examples, and historical material behind BSV overlays. This is a reading route—not a pile of links.</p><div class="hero-actions"><a class="button button-primary" href="https://docs.bsvblockchain.org/network-topology/overlay-services" rel="external" data-event="resource.clicked">Start with the official overview <span aria-hidden="true">↗</span></a><a class="text-link" href="/overlays/build">Follow the implementation route <span aria-hidden="true">→</span></a></div><div class="legend"><span><i class="live"></i>Current / maintained</span><span><i class="context"></i>Context / example</span><span><i class="history"></i>Historical / aspirational</span></div></header>
   <section class="atlas-note"><p class="section-number">How this atlas is curated</p><div><h2>Status is part<br>of the <em>meaning.</em></h2><p>Overlay vocabulary has evolved. Earlier “confederacy” discovery documents help explain the lineage, but BRC-88 is the current SHIP/SLAP source. BRC-76 introduced GASP; current package documentation describes the behavior people actually implement. Archived repositories are labeled so old examples do not masquerade as present guidance.</p><a href="/overlays/build">See the recommended implementation route →</a></div></section>
   ${resourceGroups()}
   <section class="atlas-close"><p>Know a durable primary source or working public overlay we should review?</p><a href="https://github.com/p2ppsr/metanet-fyi/issues" rel="external">Propose an addition on GitHub <span aria-hidden="true">↗</span></a></section></article>`
