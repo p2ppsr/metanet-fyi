@@ -105,8 +105,8 @@ function home () {
   return `<section class="hero home-hero" aria-labelledby="hero-title">
     <div class="eyebrow"><span>Field notes</span><span>Independent</span><span>Open sources</span></div>
     <h1 id="hero-title">The Metanet,<br><em>made legible.</em></h1>
-    <p class="hero-deck">Metanet.fyi publishes independent visual field guides for curious readers, people publishing data in Bitcoin transactions, builders, and operators. Start with a human question; leave with a mental model, primary sources, and a practical next move.</p>
-    <div class="hero-actions"><a class="button button-primary" href="/overlays" data-event="guide.started">Enter field guide 001 <span aria-hidden="true">↗</span></a><a class="text-link" href="/resources">Browse the source atlas <span aria-hidden="true">→</span></a></div>
+    <p class="hero-deck">Metanet.fyi publishes independent visual explainers for curious readers, data publishers, builders, and operators. Start with Overlays: how groups keep and share the Bitcoin records they care about without searching the whole history.</p>
+    <div class="hero-actions"><a class="button button-primary" href="/overlays" data-event="guide.started">Read: Overlays, explained <span aria-hidden="true">↗</span></a><a class="text-link" href="/resources">Browse the source atlas <span aria-hidden="true">→</span></a></div>
     <a class="feature-card" href="/overlays" data-event="guide.started">
       <span class="feature-index">001</span><span class="feature-kicker">New field guide · 18 min</span>
       <h2>Overlays</h2><p>How applications find, share, preserve, and prove the particular transactions they care about—without scanning the world.</p>
@@ -128,12 +128,12 @@ function overlays () {
   <section class="hero guide-hero" aria-labelledby="hero-title">
     <div class="eyebrow"><span>Field guide 001</span><span>Overlays</span><span>18 min</span><span>Reviewed Sep 2026</span></div>
     <h1 id="hero-title">The chain proves it.<br><em>The network keeps it useful.</em></h1>
-    <p class="hero-deck">The blockchain orders. An overlay uses shared topic rules to select transactions that independent hosts retain. An application presents them. Proof lets you verify bytes you receive; it cannot recreate missing bytes or guarantee availability.</p>
+    <p class="hero-deck">Think of a shared specialist library. The blockchain—the public ledger—orders transactions. The overlay—the specialist network—uses a published filter to choose relevant records, and separately run services keep copies. The app shows them. A Merkle proof is a cryptographic receipt, not a backup: it checks a record you received but cannot restore anything nobody saved.</p>
     <div class="hero-actions"><a class="button button-primary" href="#quick-model" data-event="guide.started">Get the 30-second model <span aria-hidden="true">↓</span></a><a class="text-link" href="/overlays/recovery">Can my data survive an app? <span aria-hidden="true">↗</span></a></div>
     <aside class="quick-model" id="quick-model" aria-labelledby="quick-model-title">
       <span id="quick-model-title">The 30-second model</span>
-      <p><b>The blockchain orders.</b> <b>An overlay selects and retains.</b> <b>An application presents.</b></p>
-      <p>A cryptographic proof can authenticate bytes you have. It cannot recreate bytes that nobody kept.</p>
+      <p><b>Public ledger: order.</b> <b>Specialist network: choose and keep.</b> <b>App: make useful.</b></p>
+      <p>A proof is a receipt, not a backup. Multiple independent keepers, a catch-up path, and a portable copy make recovery possible.</p>
       <nav aria-label="Choose a role"><a href="/overlays/recovery" data-event="pathway.selected">Publisher: test survival →</a><a href="/overlays/build" data-event="pathway.selected">Builder: follow the build path →</a><a href="/resources" data-event="pathway.selected">Reader: open the sources →</a></nav>
     </aside>
     ${topology}

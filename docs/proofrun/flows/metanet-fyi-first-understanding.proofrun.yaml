@@ -42,11 +42,11 @@ journeys:
         expected: The value, independent editorial role, featured subject, and next action are clear from the first viewport.
         evidence: [screenshot, trace]
       - id: explain-model
-        instruction: Read enough of the guide to explain the distinct jobs of the blockchain, an overlay, and an application; then explain why proof alone is not a storage policy.
+        instruction: Use the visible “Get the 30-second model” route rather than scanning the full article. From that opening model, explain the distinct jobs of the blockchain, an overlay, and an application; then explain why proof alone is not a storage policy.
         expected: The explanation includes selective topic rules, independent retention, verifiable evidence, and the fact that a Merkle proof cannot recreate missing bytes.
         evidence: [screenshot, trace]
       - id: choose-role-path
-        instruction: Pick the most relevant visible route for a publisher, builder, or source-seeking reader and verify that the destination gives a concrete next action.
+        instruction: From the three role links in the 30-second model, pick the most relevant route for a publisher, builder, or source-seeking reader and verify that the destination gives a concrete next action.
         expected: A role-specific action is visible, works, and preserves conceptual continuity.
         evidence: [screenshot, trace]
 assertions:
