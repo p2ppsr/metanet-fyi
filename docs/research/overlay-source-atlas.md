@@ -16,7 +16,7 @@ Metanet.fyi therefore occupies the “concept → proof → action” layer. It 
 - SHIP and SLAP in BRC-88 are discovery protocols: SHIP advertisements help find hosts supporting topics, while SLAP advertisements help find lookup services. The broader stack uses discovered peers for propagation and queries.
 - GASP began in exploratory BRC-76. Current implementation behavior should be sourced to the maintained `@bsv/gasp` package.
 - BRC-23 and BRC-25 are historical discovery designs superseded in that role by BRC-88. BRC-101 is aspirational. The older BSV Go overlay repository is archived; the TypeScript stack is the current official implementation route.
-- BASM adds per-block manifests to reason about the completeness of confirmed topic data.
+- BASM adds block-aligned sparse Merkle roots and per-block topic anchors so peers can compare confirmed topic state and efficiently locate differences.
 
 ## Primary references
 
@@ -26,7 +26,7 @@ Metanet.fyi therefore occupies the “concept → proof → action” layer. It 
 - [BRC-24 Overlay Lookup Services](https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0024.md)
 - [BRC-62 BEEF](https://github.com/bsv-blockchain/BRCs/blob/master/transactions/0062.md)
 - [BRC-74 BUMP](https://github.com/bsv-blockchain/BRCs/blob/master/transactions/0074.md)
-- [BRC-76 GASP](https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0076.md)
+- [BRC-76 GASP](https://github.com/bsv-blockchain/BRCs/blob/master/transactions/0076.md)
 - [BRC-81 Private Overlays](https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0081.md)
 - [BRC-87 Overlay Names](https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0087.md)
 - [BRC-88 SHIP and SLAP](https://github.com/bsv-blockchain/BRCs/blob/master/overlays/0088.md)
@@ -38,7 +38,7 @@ Metanet.fyi therefore occupies the “concept → proof → action” layer. It 
 - [`@bsv/overlay`](https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/overlay)
 - [`@bsv/overlay-express`](https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/overlay-express)
 - [`@bsv/overlay-discovery-services`](https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/overlay-discovery-services)
-- [`@bsv/gasp`](https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/gasp)
+- [`@bsv/gasp`](https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/gasp-core)
 - [`@bsv/overlay-topics`](https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/topics)
 
 ## Concrete examples
