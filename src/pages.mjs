@@ -22,16 +22,60 @@ function breadcrumbJsonLd (path) {
 function shell ({ path, body, nonce, jsonLd = [], article = false }) {
   const meta = routes[path]
   const canonical = `${site.origin}${path === '/' ? '' : path}`
+  const image = `${site.origin}${meta.image}`
+  const breadcrumb = breadcrumbJsonLd(path)
   const schemas = [
     {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
+      '@id': `${site.origin}/#website`,
       name: site.name,
       url: site.origin,
       description: site.description,
-      inLanguage: 'en'
+      inLanguage: 'en-US',
+      publisher: { '@id': `${site.origin}/#organization` }
     },
-    breadcrumbJsonLd(path),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': `${site.origin}/#organization`,
+      name: site.name,
+      url: site.origin,
+      logo: { '@type': 'ImageObject', url: `${site.origin}/icon-512.png`, width: 512, height: 512 }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: meta.title,
+      description: meta.description,
+      inLanguage: 'en-US',
+      isPartOf: { '@id': `${site.origin}/#website` },
+      primaryImageOfPage: { '@id': `${image}#primary` },
+      ...(breadcrumb ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
+      datePublished: site.published,
+      dateModified: site.reviewed,
+      isAccessibleForFree: true,
+      license: 'https://creativecommons.org/licenses/by/4.0/'
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ImageObject',
+      '@id': `${image}#primary`,
+      url: image,
+      contentUrl: image,
+      width: 1200,
+      height: 630,
+      caption: `${meta.label} — Metanet.fyi`,
+      encodingFormat: 'image/jpeg',
+      creator: { '@id': `${site.origin}/#organization` },
+      creditText: 'Metanet.fyi',
+      copyrightNotice: 'Metanet.fyi, licensed CC BY 4.0',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      acquireLicensePage: `${site.origin}/about`
+    },
+    breadcrumb ? { '@context': 'https://schema.org', '@id': `${canonical}#breadcrumb`, ...breadcrumb } : null,
     ...jsonLd
   ].filter(Boolean)
 
@@ -43,26 +87,40 @@ function shell ({ path, body, nonce, jsonLd = [], article = false }) {
   <title>${esc(meta.title)}</title>
   <meta name="description" content="${esc(meta.description)}">
   <meta name="author" content="Metanet.fyi editorial">
+  <meta name="application-name" content="Metanet.fyi">
   <meta name="theme-color" content="#101112">
+  <meta name="msapplication-TileColor" content="#101112">
   <meta name="color-scheme" content="dark light">
+  <meta name="format-detection" content="telephone=no">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="${canonical}">
+  <link rel="alternate" hreflang="en" href="${canonical}">
+  <link rel="alternate" hreflang="x-default" href="${canonical}">
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+  <link rel="image_src" href="${image}">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/styles.css">
   <meta property="og:site_name" content="Metanet.fyi">
+  <meta property="og:locale" content="en_US">
   <meta property="og:type" content="${article ? 'article' : 'website'}">
   <meta property="og:title" content="${esc(meta.title)}">
   <meta property="og:description" content="${esc(meta.description)}">
   <meta property="og:url" content="${canonical}">
-  <meta property="og:image" content="${site.origin}${meta.image}">
+  <meta property="og:image" content="${image}">
+  <meta property="og:image:url" content="${image}">
+  <meta property="og:image:secure_url" content="${image}">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${esc(meta.label)} — Metanet.fyi">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="${canonical}">
   <meta name="twitter:title" content="${esc(meta.title)}">
   <meta name="twitter:description" content="${esc(meta.description)}">
-  <meta name="twitter:image" content="${site.origin}${meta.image}">
+  <meta name="twitter:image" content="${image}">
+  <meta name="twitter:image:alt" content="${esc(meta.label)} — Metanet.fyi">
   ${article ? `<meta property="article:published_time" content="${site.published}T12:00:00-07:00"><meta property="article:modified_time" content="${site.reviewed}T12:00:00-07:00"><meta property="article:section" content="BSV education">` : ''}
   ${schemas.map(schema => `<script type="application/ld+json" nonce="${nonce}">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`).join('\n  ')}
   <script src="/site.js" defer></script>
@@ -255,13 +313,13 @@ export function renderPage (path, nonce) {
     '@type': path === '/overlays' ? 'Article' : 'HowTo',
     headline: routes[path].title.replace(' — Metanet.fyi', ''),
     description: routes[path].description,
-    image: `${site.origin}${routes[path].image}`,
+    image: { '@id': `${site.origin}${routes[path].image}#primary` },
     datePublished: site.published,
     dateModified: site.reviewed,
     author: { '@type': 'Organization', name: 'Metanet.fyi editorial' },
     publisher: { '@type': 'Organization', name: site.name, url: site.origin },
-    mainEntityOfPage: `${site.origin}${path}`,
-    inLanguage: 'en'
+    mainEntityOfPage: { '@id': `${site.origin}${path}#webpage` },
+    inLanguage: 'en-US'
   }] : []
   return shell({ path, body: renderer(), nonce, jsonLd: articleSchema, article })
 }

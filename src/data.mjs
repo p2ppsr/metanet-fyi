@@ -10,43 +10,43 @@ export const routes = {
   '/': {
     title: 'Metanet.fyi — The Metanet, made legible',
     description: 'Visual field guides that connect plain-language Metanet concepts to proofs, standards, code, and the next useful action.',
-    image: '/social/home.png',
+    image: '/social/home-v2.jpg',
     label: 'Field notes for a verifiable internet'
   },
   '/overlays': {
     title: 'BSV Overlays, Explained — Metanet.fyi',
     description: 'A visual, plain-language guide to BSV overlay networks: topics, SHIP, SLAP, GASP, proofs, recovery, and the path from concept to code.',
-    image: '/social/overlays.png',
+    image: '/social/overlays-v2.jpg',
     label: 'Field guide 001 · Overlays'
   },
   '/overlays/recovery': {
     title: 'Can Your On-Chain Data Survive the App? — Metanet.fyi',
     description: 'A practical resilience test for publishers and communities: what must remain open, replicated, proven, discoverable, and exportable.',
-    image: '/social/recovery.png',
+    image: '/social/recovery-v2.jpg',
     label: 'Overlay field kit · Recovery'
   },
   '/overlays/build': {
     title: 'Build an Overlay Path — Metanet.fyi',
     description: 'Choose a topic, define deterministic admission and lookup rules, replicate with proofs, test recovery, and move into current BSV overlay tooling.',
-    image: '/social/build.png',
+    image: '/social/build-v2.jpg',
     label: 'Overlay field kit · Build'
   },
   '/resources': {
     title: 'The BSV Overlay Source Atlas — Metanet.fyi',
     description: 'A curated, status-labeled map of current overlay specifications, implementations, examples, learning material, and historical proposals.',
-    image: '/social/resources.png',
+    image: '/social/resources-v2.jpg',
     label: 'Source atlas · Reviewed September 2026'
   },
   '/about': {
     title: 'About Metanet.fyi',
     description: 'Metanet.fyi is an independent editorial field guide connecting understandable concepts to verifiable primary sources and useful next actions.',
-    image: '/social/about.png',
+    image: '/social/about-v2.jpg',
     label: 'About this field guide'
   },
   '/privacy': {
     title: 'Privacy — Metanet.fyi',
     description: 'The compact, privacy-bounded measurement policy for Metanet.fyi.',
-    image: '/social/privacy.png',
+    image: '/social/privacy-v2.jpg',
     label: 'Privacy by restraint'
   }
 }

@@ -25,6 +25,12 @@ npm run verify
 
 The local site listens on `http://localhost:4321`. Verification includes unit/API tests, build generation, Chromium accessibility and responsive checks, and four mobile Lighthouse audits. Lighthouse thresholds are 95 performance and 100 accessibility, best practices, and SEO.
 
+## Social previews
+
+Every public route declares its own versioned 1200×630 JPEG through Open Graph, Twitter Card, standard image discovery, and schema.org metadata. `npm run build` regenerates those cards plus the legacy PNG aliases and install icons. The generator embeds the project typefaces directly into its SVG inputs before rasterizing them, so production output does not depend on fonts installed on the build runner.
+
+The test suite verifies dimensions, format, opacity, color space, byte size, cache and cross-origin headers, per-route uniqueness, and successful retrieval using Slack, X/Twitter, Facebook, LinkedIn, and Discord crawler user agents.
+
 ## Deployment
 
 GitHub Actions builds a traceable Linux/amd64 image on the Evans Creek self-hosted runner and pushes it to the cluster registry. Kubernetes, DNS, certificates, rollback, and operational evidence are owned by the private `network-ops` repository.

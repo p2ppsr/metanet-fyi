@@ -15,6 +15,8 @@ const assetTypes = {
   '.json': 'application/json; charset=utf-8',
   '.webmanifest': 'application/manifest+json; charset=utf-8',
   '.svg': 'image/svg+xml; charset=utf-8',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
   '.png': 'image/png',
   '.txt': 'text/plain; charset=utf-8'
 }
@@ -59,8 +61,8 @@ function send (request, response, status, body, headers = {}, nonce = '') {
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/sitemap/0.9">
-${Object.keys(routes).map(path => `  <url><loc>${site.origin}${path === '/' ? '' : path}</loc><lastmod>${site.reviewed}</lastmod></url>`).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${Object.entries(routes).map(([path, meta]) => `  <url><loc>${site.origin}${path === '/' ? '' : path}</loc><lastmod>${site.reviewed}</lastmod><image:image><image:loc>${site.origin}${meta.image}</image:loc><image:title>${meta.title}</image:title><image:caption>${meta.label} — Metanet.fyi</image:caption></image:image></url>`).join('\n')}
 </urlset>`
 
 const resourceJson = JSON.stringify({ name: 'Metanet.fyi BSV Overlay Source Atlas', reviewed: site.reviewed, license: 'CC BY 4.0', resources }, null, 2)
@@ -92,10 +94,16 @@ async function sendAsset (request, response, pathname, nonce) {
     const info = await stat(candidate)
     if (!info.isFile()) return false
     const body = await readFile(candidate)
-    const longLived = pathname.startsWith('/social/') || pathname === '/favicon.svg'
+    const versioned = /\/social\/[a-z-]+-v\d+\.jpg$/.test(pathname)
+    const socialAsset = pathname.startsWith('/social/')
     send(request, response, 200, body, {
       'Content-Type': assetTypes[extension],
-      'Cache-Control': longLived ? 'public, max-age=86400, stale-while-revalidate=604800' : 'public, max-age=3600, stale-while-revalidate=86400'
+      'Cache-Control': versioned
+        ? 'public, max-age=31536000, immutable'
+        : socialAsset || pathname === '/favicon.svg' || pathname.endsWith('-icon.png') || pathname.startsWith('/icon-')
+          ? 'public, max-age=86400, stale-while-revalidate=604800'
+          : 'public, max-age=3600, stale-while-revalidate=86400',
+      ...(socialAsset ? { 'Access-Control-Allow-Origin': '*', 'Cross-Origin-Resource-Policy': 'cross-origin' } : {})
     }, nonce)
     return true
   } catch {
