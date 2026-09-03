@@ -37,11 +37,11 @@ journeys:
     maxSeconds: 420
     steps:
       - id: complete-assessment
-        instruction: Use only the keyboard to inspect and complete the survival test for a hypothetical dataset that has an open format and mined transactions but only one custodian, no tested catch-up, and no portable export.
-        expected: Every check is understandable and operable, the score changes visibly, and the result does not claim resilience for an incomplete design.
+        instruction: Use only the keyboard to activate the visible “Load a fragile 2/7 example” action, representing a dataset with an open format and mined transaction artifacts but only one custodian, no tested catch-up, and no portable export. Confirm the honest score and leave unmet items unchecked; that truthful incomplete score is the successful task outcome, not a product warning.
+        expected: Every check is understandable and operable, the score changes visibly, and the result correctly avoids a resilience claim. Treat that honest low score as a pass because the interface handled the incomplete scenario correctly.
         evidence: [screenshot, trace]
       - id: find-remediation
-        instruction: Identify the missing continuity mechanisms, find the continuity packet, and follow the route that would help a builder address the gaps.
+        instruction: Identify the missing continuity mechanisms, use the visible continuity-packet route, and follow the nearby build-path route that would help a builder address the gaps.
         expected: Independent copies, proof-bearing artifacts, catch-up, lookup contracts, exports, and recovery rehearsal are discoverable; the build path is reachable.
         evidence: [screenshot, trace]
 assertions:

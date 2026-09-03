@@ -34,6 +34,16 @@ test('recovery checklist updates, persists, and resets', async ({ page }) => {
   await expect(page.locator('#recovery-score')).toHaveText('0')
 })
 
+test('fragile example creates an honest two-of-seven state', async ({ page }) => {
+  await page.goto('/overlays/recovery')
+  await page.locator('#load-fragile-example').click()
+  await expect(page.locator('#recovery-score')).toHaveText('2')
+  const states = await page.locator('[data-recovery-check]').evaluateAll(checks => checks.map(check => check.checked))
+  expect(states).toEqual([true, false, true, false, false, false, false])
+  await expect(page.getByRole('link', { name: /Review the continuity packet/ })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Fix the gaps/ })).toBeVisible()
+})
+
 test('mobile navigation reaches the flagship guide', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')

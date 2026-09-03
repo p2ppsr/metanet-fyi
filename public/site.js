@@ -1,7 +1,7 @@
 (() => {
   'use strict'
   const endpoint = 'https://usercom.babbage.systems/signal'
-  const allowedEvents = new Set(['page.view', 'guide.started', 'pathway.selected', 'resource.clicked', 'recovery.check', 'recovery.reset'])
+  const allowedEvents = new Set(['page.view', 'guide.started', 'pathway.selected', 'resource.clicked', 'recovery.check', 'recovery.example', 'recovery.reset'])
   const privacySignal = navigator.globalPrivacyControl === true || navigator.doNotTrack === '1'
   const isProductionHost = location.hostname === 'metanet.fyi' || location.hostname === 'www.metanet.fyi'
 
@@ -44,6 +44,7 @@
   const checks = [...document.querySelectorAll('[data-recovery-check]')]
   const score = document.querySelector('#recovery-score')
   const reset = document.querySelector('#reset-checks')
+  const fragileExample = document.querySelector('#load-fragile-example')
   if (!checks.length || !score) return
   const storageKey = 'metanet_fyi_recovery_checks_v1'
   function updateScore (track = false) {
@@ -58,6 +59,11 @@
   } catch {}
   updateScore()
   checks.forEach(check => check.addEventListener('change', () => updateScore(true)))
+  fragileExample?.addEventListener('click', () => {
+    checks.forEach((check, index) => { check.checked = index === 0 || index === 2 })
+    updateScore()
+    signal('recovery.example', { score: 2 })
+  })
   reset?.addEventListener('click', () => {
     checks.forEach(check => { check.checked = false })
     updateScore()
