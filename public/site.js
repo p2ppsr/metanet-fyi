@@ -3,6 +3,7 @@
   const endpoint = 'https://usercom.babbage.systems/signal'
   const allowedEvents = new Set(['page.view', 'guide.started', 'pathway.selected', 'resource.clicked', 'recovery.check', 'recovery.reset'])
   const privacySignal = navigator.globalPrivacyControl === true || navigator.doNotTrack === '1'
+  const isProductionHost = location.hostname === 'metanet.fyi' || location.hostname === 'www.metanet.fyi'
 
   function sessionId () {
     const key = 'metanet_fyi_session'
@@ -15,7 +16,7 @@
     } catch { return 'ephemeral' }
   }
   function signal (event, detail = {}) {
-    if (privacySignal || !allowedEvents.has(event)) return
+    if (!isProductionHost || privacySignal || !allowedEvents.has(event)) return
     const cleanUrl = new URL(location.href)
     cleanUrl.search = ''
     cleanUrl.hash = ''
