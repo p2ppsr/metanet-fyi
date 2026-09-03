@@ -16,11 +16,11 @@ matrix:
     accessibility: [standard]
 budget:
   maxCases: 4
-  maxProviderCalls: 48
-  maxInputTokens: 400000
-  maxOutputTokens: 48000
+  maxProviderCalls: 72
+  maxInputTokens: 600000
+  maxOutputTokens: 72000
   maxCostUsd: 1
-  perCase: {maxProviderCalls: 12, maxInputTokens: 100000, maxOutputTokens: 12000, maxCostUsd: 0.25}
+  perCase: {maxProviderCalls: 18, maxInputTokens: 150000, maxOutputTokens: 18000, maxCostUsd: 0.25}
   onExceed: block
 intelligence:
   mode: adaptive
