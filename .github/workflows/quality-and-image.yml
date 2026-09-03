@@ -1,0 +1,62 @@
+name: Quality and image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run verify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: metanet-fyi-quality-evidence
+          path: |
+            artifacts/lighthouse
+            test-results
+          if-no-files-found: ignore
+          retention-days: 30
+
+  image:
+    if: github.event_name != 'pull_request'
+    needs: quality
+    runs-on: [self-hosted, evans-creek-local-deploy, linux-amd64, docker, kubectl, local-registry]
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and push traceable image
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          short_sha="${GITHUB_SHA:0:12}"
+          release_date="$(date -u +%Y%m%d)"
+          push_image="10.152.183.28:5000/p2ppsr/metanet-fyi:${short_sha}-production-${release_date}"
+          pull_image="registry.cars-operator-system.svc.cluster.local:5000/p2ppsr/metanet-fyi:${short_sha}-production-${release_date}"
+          docker build --pull --platform linux/amd64 \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label "org.opencontainers.image.created=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --tag "${push_image}" .
+          docker push "${push_image}"
+          echo "pull_image=${pull_image}" >> "${GITHUB_OUTPUT}"
+          echo "Published ${pull_image}"
+      - name: Release summary
+        run: echo '### Cluster image `${{ steps.image.outputs.pull_image }}`' >> "$GITHUB_STEP_SUMMARY"

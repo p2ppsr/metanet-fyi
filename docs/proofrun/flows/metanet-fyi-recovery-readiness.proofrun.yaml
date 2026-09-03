@@ -1,0 +1,58 @@
+apiVersion: proofrun.dev/v1
+kind: Workflow
+metadata:
+  id: p2ppsr.metanet-fyi-recovery-readiness
+  name: Metanet.fyi recovery readiness path
+  version: 1.0.0
+  description: Proves that an on-chain publisher can identify continuity gaps and leave with a practical remediation path.
+target: {type: web, url: https://metanet.fyi/overlays/recovery, environment: production}
+uses: [generic.website-baseline@1.0.0]
+matrix:
+  maxCases: 2
+  dimensions:
+    agent: [openai-computer]
+    profile: [customer.impatient-newcomer@1.0.0]
+    device: [device.chromium-desktop@1.0.0, device.chromium-mobile@1.0.0]
+    accessibility: [keyboard]
+budget:
+  maxCases: 2
+  maxProviderCalls: 24
+  maxInputTokens: 200000
+  maxOutputTokens: 24000
+  maxCostUsd: 0.5
+  perCase: {maxProviderCalls: 12, maxInputTokens: 100000, maxOutputTokens: 12000, maxCostUsd: 0.25}
+  onExceed: block
+intelligence:
+  mode: adaptive
+  initialTier: economy
+  escalationTier: balanced
+  maxEscalations: 1
+  escalateBelowConfidence: 0.65
+  escalateOn: [low-confidence, stall, invalid-response]
+  observation: {mode: adaptive, initialDetail: low, escalationDetail: high, maxContextCharacters: 14000, skipUnchangedScreenshots: true}
+journeys:
+  - id: assess-and-remediate
+    goal: Assess whether an on-chain dataset could outlive its original application and identify the next corrective action.
+    start: /overlays/recovery
+    maxActions: 26
+    maxSeconds: 300
+    steps:
+      - id: complete-assessment
+        instruction: Use only the keyboard to inspect and complete the survival test for a hypothetical dataset that has an open format and mined transactions but only one custodian, no tested catch-up, and no portable export.
+        expected: Every check is understandable and operable, the score changes visibly, and the result does not claim resilience for an incomplete design.
+        evidence: [screenshot, trace]
+      - id: find-remediation
+        instruction: Identify the missing continuity mechanisms, find the continuity packet, and follow the route that would help a builder address the gaps.
+        expected: Independent copies, proof-bearing artifacts, catch-up, lookup contracts, exports, and recovery rehearsal are discoverable; the build path is reachable.
+        evidence: [screenshot, trace]
+assertions:
+  - {id: target-health, type: oracle, severity: fail, oracle: target-reachable, statement: The recovery field kit remains reachable.}
+  - {id: automated-a11y, type: accessibility, severity: fail, oracle: axe, statement: The recovery and build pages have no automated WCAG A/AA violations.}
+policy:
+  unsafeContent: stop
+  highImpactActions: deny
+  allowedHosts: [metanet.fyi]
+  spendLimit: 0
+  spendUnit: USD
+  warnExitCode: 0
+remediation: {mode: manual, allowed: true, proposalOnly: true, requiredApprovers: 1}

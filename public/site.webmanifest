@@ -1,0 +1,10 @@
+{
+  "name": "Metanet.fyi",
+  "short_name": "Metanet.fyi",
+  "description": "Visual field guides to the protocols behind the Metanet.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101112",
+  "theme_color": "#101112",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
