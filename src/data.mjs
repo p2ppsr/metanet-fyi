@@ -31,6 +31,9 @@ export const routes = {
     image: '/social/build-v3.jpg',
     label: 'Overlay field kit · Build'
   },
+  '/interoperability': { title: 'Interoperability Lab: Test the Handoffs — Metanet.fyi', description: 'Understand ITCVE-1, the four ISI programs, component substitution and scoped experimental evidence.', image: '/social/interop-v3.jpg', label: 'Interoperability field guide', published: '2026-11-02', reviewed: '2026-11-02' },
+  '/interoperability/integrate': { title: 'Integrate a System Under Test — Metanet.fyi', description: 'Choose a component role, pin artifacts, implement an adapter and contribute a reproducible interoperability test.', image: '/social/interop-integrate-v3.jpg', label: 'Interoperability field guide', published: '2026-11-02', reviewed: '2026-11-02' },
+  '/interoperability/examples': { title: 'Interoperability Examples and Evidence — Metanet.fyi', description: 'Run the offline laboratory self-test and distinguish verification, replay and re-execution.', image: '/social/interop-examples-v3.jpg', label: 'Interoperability field guide', published: '2026-11-02', reviewed: '2026-11-02' },
   '/resources': {
     title: 'The BSV Overlay Source Atlas — Metanet.fyi',
     description: 'A curated, status-labeled map of current overlay specifications, implementations, examples, learning material, and historical proposals.',
@@ -52,6 +55,12 @@ export const routes = {
 }
 
 export const resources = [
+  { group: 'Interoperability laboratory · added November 2, 2026', items: [
+    { title: 'TPNIL interoperability laboratory', url: 'https://github.com/p2ppsr/interop', owner: 'P2PPSR', status: 'Experimental · primary source', note: 'Versioned ITCVE environments, four ISI programs, exact artifacts and retained evidence. Certification remains unavailable.' },
+    { title: 'Laboratory implementation status', url: 'https://github.com/p2ppsr/interop/blob/main/docs/implementation-status.md', owner: 'P2PPSR', status: 'Dated execution boundaries', note: 'Passing, failing and blocked wallet assertions, reference qualifications and remaining prerequisites; read the current version.' },
+    { title: 'Integrate a component', url: 'https://metanet.fyi/interoperability/integrate', owner: 'Metanet.fyi', status: 'Educational guide', note: 'A role-to-program map, adapter lifecycle and proposed overlay substitution example. Not a test result.' },
+    { title: 'Compatibility evidence checklist', url: 'https://bsv.place/guides/interoperability-testing-and-evidence/', owner: 'BSV.place / Project Babbage', status: 'Evidence guide', note: 'Read a scoped result, distinguish verification from re-execution, and use the downloadable matrix and run-record template.' }
+  ] },
   {
     group: 'Start here',
     items: [

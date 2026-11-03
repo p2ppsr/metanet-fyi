@@ -1,3 +1,4 @@
+import { interoperability, integration, examples } from './interop.mjs'
 import { currentResourceCount, resources, routes, site } from './data.mjs'
 
 const esc = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character])
@@ -6,7 +7,7 @@ const brand = `<span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i>
 
 function breadcrumbJsonLd (path) {
   if (path === '/') return null
-  const names = { overlays: 'Overlays', recovery: 'Recovery test', build: 'Build path', resources: 'Source atlas', about: 'About', privacy: 'Privacy' }
+  const names = { interoperability: 'Interoperability', integrate: 'Integration guide', examples: 'Examples', overlays: 'Overlays', recovery: 'Recovery test', build: 'Build path', resources: 'Source atlas', about: 'About', privacy: 'Privacy' }
   const parts = path.split('/').filter(Boolean)
   return {
     '@type': 'BreadcrumbList',
@@ -54,8 +55,8 @@ function shell ({ path, body, nonce, jsonLd = [], article = false }) {
       isPartOf: { '@id': `${site.origin}/#website` },
       primaryImageOfPage: { '@id': `${image}#primary` },
       ...(breadcrumb ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
-      datePublished: site.published,
-      dateModified: site.reviewed,
+      datePublished: routes[path].published || site.published,
+      dateModified: routes[path].reviewed || site.reviewed,
       isAccessibleForFree: true,
       license: 'https://creativecommons.org/licenses/by/4.0/'
     },
@@ -131,6 +132,7 @@ function shell ({ path, body, nonce, jsonLd = [], article = false }) {
     <a class="brand" href="/" aria-label="Metanet.fyi home">${brand}</a>
     <nav aria-label="Primary navigation">
       <a href="/overlays"${path.startsWith('/overlays') ? ' aria-current="page"' : ''}>Overlays</a>
+      <a href="/interoperability"${path.startsWith('/interoperability') ? ' aria-current="page"' : ''}>Interoperability</a>
       <a href="/resources"${path === '/resources' ? ' aria-current="page"' : ''}>Source atlas</a>
       <a class="nav-action" href="/overlays/recovery">Test resilience <span aria-hidden="true">↗</span></a>
     </nav>
@@ -172,6 +174,7 @@ function home () {
       <span class="feature-orbit" aria-hidden="true"><i></i><i></i><i></i></span>
     </a>
   </section>
+  <section class="interop-discovery"><p class="section-number">New · Field guide 002</p><h2>Will the pieces <em>work together?</em></h2><p>Explore the new interoperability laboratory: a common environment, four testing programs, and practical ways to connect independently built systems.</p><a class="button button-primary" href="/interoperability" data-event="guide.started">Explore the interoperability guide →</a></section>
   <section class="home-principles">
     <p class="section-number">The editorial promise</p>
     <div><h2>Clarity without <em>hand-waving.</em></h2>
@@ -184,7 +187,7 @@ function home () {
 function overlays () {
   return `<article>
   <section class="hero guide-hero" aria-labelledby="hero-title">
-    <div class="eyebrow"><span>Field guide 001</span><span>Overlays</span><span>18 min</span><span>Reviewed Sep 2026</span></div>
+    <div class="eyebrow"><span>Field guide 001</span><span>Overlays</span><span>18 min</span><span>Baseline Sep 2026 · lab added Nov 2</span></div>
     <h1 id="hero-title">The chain proves it.<br><em>The network keeps it useful.</em></h1>
     <p class="hero-deck">Think of a shared specialist library. The blockchain—the public ledger—orders transactions. The overlay—the specialist network—uses a published filter to choose relevant records, and separately run services keep copies. The app shows them. A Merkle proof is a cryptographic receipt, not a backup: it checks a record you received but cannot restore anything nobody saved.</p>
     <div class="hero-actions"><a class="button button-primary" href="#quick-model" data-event="guide.started">Get the 30-second model <span aria-hidden="true">↓</span></a><a class="text-link" href="/overlays/recovery">Can my data survive an app? <span aria-hidden="true">↗</span></a></div>
@@ -263,7 +266,7 @@ function recovery () {
   return `<article class="kit-page"><header class="kit-hero"><div class="eyebrow"><span>Publisher route</span><span>Recovery</span><span>7 checks</span></div><h1>Will your data<br><em>outlive your app?</em></h1><p class="hero-deck">A mined transaction proves where a commitment was made. This publisher’s test asks the harder question: could another person still retrieve, interpret, validate, and serve the record if you disappeared?</p><a class="button button-primary" href="#survival-checklist" data-event="guide.started">Start the seven checks <span aria-hidden="true">↓</span></a><div class="score-card"><span>Your working score</span><strong><output id="recovery-score">0</output><small>/ 7</small></strong><p>No data leaves this page. This checklist is stored only in your browser.</p></div></header>
   <section class="checklist-section" id="survival-checklist"><div class="checklist-intro"><p class="section-number">The survival test</p><h2>Seven “yes” answers<br>make a <em>credible path.</em></h2><p>This is an operational test, not a badge. A resilient system periodically proves these claims from a clean machine.</p><div class="kit-tools"><button class="scenario-button" type="button" id="load-fragile-example">Load a fragile 2/7 example</button><a href="#continuity-packet">Review the continuity packet ↓</a><a href="/overlays/build" data-event="pathway.selected">Fix the gaps: open build path →</a><button class="reset-button" type="button" id="reset-checks">Reset checks</button></div></div><ol class="survival-checklist">${checks.map(([number, title, question, action]) => `<li><input type="checkbox" id="check-${number}" data-recovery-check><label for="check-${number}"><span>${number}</span><span><b>${title}</b><strong>${question}</strong><small>${action}</small></span><i aria-hidden="true">✓</i></label></li>`).join('')}</ol></section>
   <section class="score-meaning"><p class="section-number">How to read the result</p><div class="score-grid"><article><b>0–2</b><h3>Commitment without continuity</h3><p>Your records may be authentic, but continued access still depends heavily on the original application.</p></article><article><b>3–5</b><h3>A recoverable design</h3><p>The pieces exist. Now remove hidden dependencies and prove that independent catch-up works.</p></article><article><b>6–7</b><h3>A rehearsed pathway</h3><p>You have the shape of durable stewardship. Keep testing operators, exports, and protocol evolution.</p></article></div></section>
-  <section class="handoff-section" id="continuity-packet"><div><p class="section-number">Make the promise testable</p><h2>Write a <em>continuity packet.</em></h2><p class="lead">One short public document should tell a future maintainer how to understand the data, obtain a complete proof-bearing copy, rebuild the index, join peers, and verify that nothing important is missing.</p></div><div class="packet-list"><span>01 Topic and schema specification</span><span>02 Reference implementation + test vectors</span><span>03 Bootstrap peers and discovery method</span><span>04 Export format and integrity manifest</span><span>05 Clean-room recovery procedure</span><span>06 Maintainer and succession policy</span></div></section>
+  <aside class="interop-note"><p>A checklist starts the investigation. <a href="/interoperability">The interoperability laboratory</a> defines testable storage and overlay replacement goals; these are not a claim that your application has passed recovery.</p></aside><section class="handoff-section" id="continuity-packet"><div><p class="section-number">Make the promise testable</p><h2>Write a <em>continuity packet.</em></h2><p class="lead">One short public document should tell a future maintainer how to understand the data, obtain a complete proof-bearing copy, rebuild the index, join peers, and verify that nothing important is missing.</p></div><div class="packet-list"><span>01 Topic and schema specification</span><span>02 Reference implementation + test vectors</span><span>03 Bootstrap peers and discovery method</span><span>04 Export format and integrity manifest</span><span>05 Clean-room recovery procedure</span><span>06 Maintainer and succession policy</span></div></section>
   <section class="action-section"><p class="section-number">Next</p><div class="next-grid two"><a href="/overlays/build" data-event="pathway.selected"><small>Turn gaps into a system</small><b>Follow the overlay build path</b><span>Rules → proof → peers → recovery →</span></a><a href="/overlays" data-event="pathway.selected"><small>Return to the model</small><b>Read the complete guide</b><span>Overlays from first principles →</span></a></div></section></article>`
 }
 
@@ -277,6 +280,7 @@ function build () {
     ['06', 'Rehearse disappearance', 'Prove the system without its creator.', 'From a clean host, recover through independent peers, rebuild lookups, verify a known record, and publish the evidence.', ['Remove original infrastructure', 'Time the recovery', 'Repeat after schema changes']]
   ]
   return `<article class="build-page"><header class="kit-hero build-hero"><div class="eyebrow"><span>Overlay field kit</span><span>Build</span><span>6 stages</span></div><h1>Build the path,<br><em>not just the endpoint.</em></h1><p class="hero-deck">An overlay is a social agreement made executable: what belongs, who keeps it, how newcomers catch up, which questions can be answered, and what evidence travels with each answer.</p><a class="button button-primary" href="#roadmap" data-event="guide.started">Open the roadmap <span aria-hidden="true">↓</span></a></header>
+  <aside class="interop-note"><p>Ready to test component handoffs? <a href="/interoperability/integrate">Use the interoperability integration guide</a>. ISI-2 targets overlay submission, lookup and synchronization; its external-SUT vectors remain draft.</p></aside>
   <section class="build-principle"><p class="section-number">The design order</p><div class="build-equation"><span>Interest</span><i>→</i><span>Rules</span><i>→</i><span>Evidence</span><i>→</i><span>Peers</span><i>→</i><strong>Continuity</strong></div><p>Start with shared interest. Technology cannot create a stewardship community that does not exist.</p></section>
   <section class="roadmap" id="roadmap"><p class="section-number">A production-minded path</p>${stages.map(([number, title, subtitle, detail, items]) => `<article class="roadmap-step"><span class="roadmap-number">${number}</span><div><h2>${title}</h2><p class="roadmap-subtitle">${subtitle}</p></div><div class="roadmap-detail"><p>${detail}</p><ul>${items.map(item => `<li>${item}</li>`).join('')}</ul></div></article>`).join('')}</section>
   <section class="starter-section"><div><p class="section-number">Current implementation route</p><h2>The shortest path<br>into <em>working code.</em></h2><p>The actively maintained TypeScript stack is the safest starting point today. Evaluate versions and deployment requirements from the repositories themselves before production use.</p></div><div class="starter-links"><a href="https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/overlay" rel="external" data-event="resource.clicked"><b>@bsv/overlay</b><span>Core engine →</span></a><a href="https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/overlay-express" rel="external" data-event="resource.clicked"><b>@bsv/overlay-express</b><span>HTTP service host →</span></a><a href="https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/overlay-discovery-services" rel="external" data-event="resource.clicked"><b>Discovery services</b><span>SHIP + SLAP →</span></a><a href="https://github.com/bsv-blockchain/ts-stack/tree/main/packages/overlays/gasp-core" rel="external" data-event="resource.clicked"><b>@bsv/gasp</b><span>Catch-up and sync →</span></a></div></section>
@@ -289,9 +293,10 @@ function resourceGroups () {
 }
 
 function resourcePage () {
-  return `<article class="resources-page"><header class="resource-hero"><div class="eyebrow"><span>Source atlas</span><span>${currentResourceCount} links</span><span>Reviewed Sep 2026</span></div><h1>Follow the claim<br><em>to its source.</em></h1><p class="hero-deck">A status-labeled map of the specifications, maintained code, examples, and historical material behind BSV overlays. This is a reading route—not a pile of links.</p><div class="hero-actions"><a class="button button-primary" href="https://docs.bsvblockchain.org/network-topology/overlay-services" rel="external" data-event="resource.clicked">Start with the official overview <span aria-hidden="true">↗</span></a><a class="text-link" href="/overlays/build">Follow the implementation route <span aria-hidden="true">→</span></a></div><div class="legend"><span><i class="live"></i>Current / maintained</span><span><i class="context"></i>Context / example</span><span><i class="history"></i>Historical / aspirational</span></div></header>
+  return `<article class="resources-page"><header class="resource-hero"><div class="eyebrow"><span>Source atlas</span><span>${currentResourceCount} links</span><span>Baseline Sep 2026 · lab added Nov 2</span></div><h1>Follow the claim<br><em>to its source.</em></h1><p class="hero-deck">A status-labeled map of the specifications, maintained code, examples, and historical material behind BSV overlays. This is a reading route—not a pile of links.</p><div class="hero-actions"><a class="button button-primary" href="https://docs.bsvblockchain.org/network-topology/overlay-services" rel="external" data-event="resource.clicked">Start with the official overview <span aria-hidden="true">↗</span></a><a class="text-link" href="/overlays/build">Follow the implementation route <span aria-hidden="true">→</span></a></div><div class="legend"><span><i class="live"></i>Current / maintained</span><span><i class="context"></i>Context / example</span><span><i class="history"></i>Historical / aspirational</span></div></header>
   <section class="atlas-note"><p class="section-number">How this atlas is curated</p><div><h2>Status is part<br>of the <em>meaning.</em></h2><p>Overlay vocabulary has evolved. Earlier “confederacy” discovery documents help explain the lineage, but BRC-88 is the current SHIP/SLAP source. BRC-76 introduced GASP; current package documentation describes the behavior people actually implement. Archived repositories are labeled so old examples do not masquerade as present guidance.</p><a href="/overlays/build">See the recommended implementation route →</a></div></section>
   ${resourceGroups()}
+  <section class="atlas-close"><p><a href="/interoperability">Understand the lab</a> · <a href="/interoperability/integrate">Plan a component integration</a></p></section>
   <section class="atlas-close"><p>Know a durable primary source or working public overlay we should review?</p><a href="https://github.com/p2ppsr/metanet-fyi/issues" rel="external">Propose an addition on GitHub <span aria-hidden="true">↗</span></a></section></article>`
 }
 
@@ -304,18 +309,18 @@ function privacy () {
 }
 
 export function renderPage (path, nonce) {
-  const bodyByPath = { '/': home, '/overlays': overlays, '/overlays/recovery': recovery, '/overlays/build': build, '/resources': resourcePage, '/about': about, '/privacy': privacy }
+  const bodyByPath = { '/interoperability': interoperability, '/interoperability/integrate': integration, '/interoperability/examples': examples, '/': home, '/overlays': overlays, '/overlays/recovery': recovery, '/overlays/build': build, '/resources': resourcePage, '/about': about, '/privacy': privacy }
   const renderer = bodyByPath[path]
   if (!renderer) return null
-  const article = path.startsWith('/overlays')
+  const article = path.startsWith('/overlays') || path.startsWith('/interoperability')
   const articleSchema = article ? [{
     '@context': 'https://schema.org',
     '@type': path === '/overlays' ? 'Article' : 'HowTo',
     headline: routes[path].title.replace(' — Metanet.fyi', ''),
     description: routes[path].description,
     image: { '@id': `${site.origin}${routes[path].image}#primary` },
-    datePublished: site.published,
-    dateModified: site.reviewed,
+    datePublished: routes[path].published || site.published,
+    dateModified: routes[path].reviewed || site.reviewed,
     author: { '@type': 'Organization', name: 'Metanet.fyi editorial' },
     publisher: { '@type': 'Organization', name: site.name, url: site.origin },
     mainEntityOfPage: { '@id': `${site.origin}${path}#webpage` },

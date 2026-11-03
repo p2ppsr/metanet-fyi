@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { fileURLToPath } from 'node:url'
 
 const axePath = fileURLToPath(import.meta.resolve('axe-core/axe.min.js'))
-const routes = ['/', '/overlays', '/overlays/recovery', '/overlays/build', '/resources', '/about', '/privacy']
+const routes = ['/interoperability', '/interoperability/integrate', '/interoperability/examples', '/', '/overlays', '/overlays/recovery', '/overlays/build', '/resources', '/about', '/privacy']
 
 test.beforeEach(async ({ page }) => {
   await page.route('https://usercom.babbage.systems/**', route => route.fulfill({ status: 204 }))

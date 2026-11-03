@@ -62,7 +62,7 @@ function send (request, response, status, body, headers = {}, nonce = '') {
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${Object.entries(routes).map(([path, meta]) => `  <url><loc>${site.origin}${path === '/' ? '' : path}</loc><lastmod>${site.reviewed}</lastmod><image:image><image:loc>${site.origin}${meta.image}</image:loc><image:title>${meta.title}</image:title><image:caption>${meta.label} — Metanet.fyi</image:caption></image:image></url>`).join('\n')}
+${Object.entries(routes).map(([path, meta]) => `  <url><loc>${site.origin}${path === '/' ? '' : path}</loc><lastmod>${meta.reviewed || site.reviewed}</lastmod><image:image><image:loc>${site.origin}${meta.image}</image:loc><image:title>${meta.title}</image:title><image:caption>${meta.label} — Metanet.fyi</image:caption></image:image></url>`).join('\n')}
 </urlset>`
 
 const resourceJson = JSON.stringify({ name: 'Metanet.fyi BSV Overlay Source Atlas', reviewed: site.reviewed, license: 'CC BY 4.0', resources }, null, 2)
@@ -70,6 +70,11 @@ const resourceJson = JSON.stringify({ name: 'Metanet.fyi BSV Overlay Source Atla
 const llms = `# Metanet.fyi
 
 > Independent visual field guides connecting plain-language Metanet concepts to primary sources and practical next actions.
+
+## Interoperability
+- [Interoperability Lab](${site.origin}/interoperability): ITCVE-1, four ISIs and experimental result scope.
+- [Integrate a component](${site.origin}/interoperability/integrate): Roles, artifacts, adapters and a proposed substitution plan.
+- [Offline example](${site.origin}/interoperability/examples): Self-test, verification, replay and re-execution boundaries.
 
 ## Primary guide
 - [BSV Overlays, Explained](${site.origin}/overlays): Topics, proof, SHIP, SLAP, GASP, BASM, and the boundary between blockchain, overlay, and application.

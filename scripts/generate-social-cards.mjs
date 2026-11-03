@@ -23,6 +23,9 @@ const palette = {
 }
 
 const cards = [
+  { path: '/interoperability', slug: 'interop', kicker: 'FIELD GUIDE 002 / INTEROPERABILITY', lines: ['TEST THE HANDOFFS.', 'KEEP THE EVIDENCE.'], motif: 'network', accent: palette.lime },
+  { path: '/interoperability/integrate', slug: 'interop-integrate', kicker: 'INTEROPERABILITY / INTEGRATE', lines: ['BRING A COMPONENT.', 'DEFINE THE BOUNDARY.'], motif: 'build', accent: palette.blue },
+  { path: '/interoperability/examples', slug: 'interop-examples', kicker: 'INTEROPERABILITY / EXAMPLES', lines: ['A SMALL FIRST RUN.', 'AN HONEST RESULT.'], motif: 'sources', accent: palette.coral },
   { path: '/', slug: 'home', kicker: 'FIELD NOTES / OPEN SOURCES', lines: ['THE METANET,', 'MADE LEGIBLE.'], motif: 'orbit', accent: palette.lime },
   { path: '/overlays', slug: 'overlays', kicker: 'FIELD GUIDE 001 / OVERLAYS', lines: ['THE CHAIN PROVES IT.', 'THE NETWORK KEEPS IT USEFUL.'], motif: 'network', accent: palette.blue },
   { path: '/overlays/recovery', slug: 'recovery', kicker: 'OVERLAY FIELD KIT / RECOVERY', lines: ['WILL YOUR DATA', 'OUTLIVE YOUR APP?'], motif: 'recovery', accent: palette.coral },

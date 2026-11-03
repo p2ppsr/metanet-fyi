@@ -18,7 +18,7 @@ const results = {}
 
 try {
   await mkdir(artifactDirectory, { recursive: true })
-  for (const [name, path] of [['home', '/'], ['overlays', '/overlays'], ['recovery', '/overlays/recovery'], ['resources', '/resources']]) {
+  for (const [name, path] of [['interop', '/interoperability'], ['home', '/'], ['overlays', '/overlays'], ['recovery', '/overlays/recovery'], ['resources', '/resources']]) {
     const run = await lighthouse(`http://127.0.0.1:${port}${path}`, {
       port: chrome.port,
       output: 'json',
